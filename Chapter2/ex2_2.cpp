@@ -6,6 +6,7 @@ using float and double number formats.
 
 #include <iostream>
 #include <math.h>
+#include <fstream> //streams from and to a file. 
 using namespace std;
 
 template <class T> T sumfunc(int N,char u){
@@ -28,22 +29,32 @@ template <class T> T sumfunc(int N,char u){
 }
 
 int main(){
-  int ns [] = {1,2,3,4,5,6,7,8,9,10}; //powers of 10 to be testet
-  
-  for (int n:ns){
+  ofstream myfile;
+  myfile.open("ex2_2.out");
+  for (int n=1;n<=9;n++){ //for n =1,2,3,...
     double N = pow(10,n); 
     //The float part
-    float fsup = sumfunc<float>(N,'u');
-    float fsdown = sumfunc<float>(N,'d');
-    cout << "Float, n = " << n << '\n';
-    cout << "Sum up: " << fsup << '\n';
-    cout << "Sum down: " << fsdown << "\n\n";
+    float fsup = sumfunc<float>(N,'u');   //float summation up
+    float fsdown = sumfunc<float>(N,'d'); //float summation down
     //The double part
     double dsup = sumfunc<double>(N,'u');
     double dsdown = sumfunc<double>(N,'d');
+    /*//Printing:
+    //Float part:
+    cout << "Float, n = " << n << '\n';
+    cout << "Sum up: " << fsup << '\n';
+    cout << "Sum down: " << fsdown << "\n\n";
+    
+    //Double part:
     cout << "Double, n = " << n << '\n';
     cout << "Sum up " <<dsup << '\n';
     cout << "Sum down: " << dsdown << "\n\n";
-  }
+    */
     
+    double freldiff = (fsup-fsdown)/fsdown; //Float relative difference
+    double dreldiff = (dsup-dsdown)/dsdown; // Double relative difference
+    myfile << N << ',' << freldiff << ',' << dreldiff  << '\n';
+  }
+  myfile.close();
+  return 0;
 }
